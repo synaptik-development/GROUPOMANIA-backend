@@ -1,5 +1,7 @@
 const multer = require("multer");
 const fs = require("fs");
+const jwtUtils = require("../utils/jwt_utils");
+// const userId = jwtUtils.getUserId(req.headers["authorization"]);
 
 // dictionnaire des extensions de fichier
 const MIME_TYPES = {
@@ -32,3 +34,11 @@ const storage = multer.diskStorage({
 });
 
 module.exports = multer({ storage: storage }).single("image");
+
+// module.exports = {
+//   saveFile: () => {
+//     multer({ storage: storage }).single("image");
+//   }
+// }
+
+// if (req.body.userId && req.body.userId !== userId)

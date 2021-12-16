@@ -158,7 +158,7 @@ exports.login = (req, res, next) => {
 exports.getUser = (req, res, next) => {
   models.user
     .findOne({
-      attributes: ["id", "username", "email", "admin", "createdAt"],
+      attributes: ["id", "username", "email", "admin", "createdAt", "updatedAt"],
       where: { id: req.params.id },
     })
     .then((userFound) => res.status(200).json({ userFound }))
@@ -187,6 +187,11 @@ exports.modifyUser = (req, res, next) => {
   const key = CryptoJS.enc.Hex.parse("000102030405060708090a0b0c0d0e0f");
   const iv = CryptoJS.enc.Hex.parse("101112131415161718191a1b1c1d1e1f");
   const cryptedEmail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
+
+  // test champs vides
+  if (!username && !email && !password) {
+    return res.status(400).json({ error: "nothing to update" });
+  }
 
   // test taille nom d'utilisateur
   if (username != null) {

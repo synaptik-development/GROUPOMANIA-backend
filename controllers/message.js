@@ -2,6 +2,7 @@ const models = require("../models");
 const fs = require("fs");
 const jwtUtils = require("../utils/jwt_utils");
 const asyncLib = require("async");
+const express = require("express");
 
 //------------------------------------------------------
 // voir tous les messages
@@ -9,7 +10,7 @@ const asyncLib = require("async");
 exports.getAllMessages = (req, res, next) => {
   models.message
     .findAll({
-      order: [["createdAt", 'DESC']],
+      order: [["createdAt", "DESC"]],
     })
     .then((messages) => res.status(200).json(messages))
     .catch((error) => {
@@ -60,20 +61,24 @@ exports.postMessage = (req, res, next) => {
         }
       },
       (userFound, done) => {
-        let newMessage = models.message
-          .create({
-            userId: userId,
-            username: userFound.username,
-            content: req.body.content,
-            imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : undefined,
-            likes: 0,
-          })
-          .then((newMessage) => {
-            done(newMessage);
-          })
-          .catch((error) => {
-            return res.status(500).json({ error: "cannot create message" });
-          });
+        if (!req.body.content && !req.file) {
+          return res.status(400).json({ error: "nothing to post" });
+        } else {
+          let newMessage = models.message
+            .create({
+              userId: userId,
+              username: userFound.username,
+              content: req.body.content ? req.body.content : "",
+              imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : undefined,
+              likes: 0,
+            })
+            .then((newMessage) => {
+              done(newMessage);
+            })
+            .catch((error) => {
+              return res.status(500).json({ error: "cannot create message" });
+            });
+        }
       },
     ],
     (newMessage) => {
@@ -114,6 +119,11 @@ exports.modifyMessage = (req, res, next) => {
       },
       (messageFound, done) => {
         if (messageFound.userId === userId) {
+          if (!req.body.content && !req.file) {
+            return res.status(400).json({ error: "nothing to update" });
+          }
+
+          //suppression de l'ancienne image si il y en a une nouvelle
           if (req.file && messageFound.imageUrl != null) {
             const filename = messageFound.imageUrl.split("/images/")[1];
             fs.unlinkSync(`images/${filename}`);

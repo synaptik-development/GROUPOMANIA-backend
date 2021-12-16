@@ -115,8 +115,8 @@
 * URL : http://localhost:3000/api/messages
 * Headers : { authorization : Bearer token }
 * Body : form-data
-  * 'content'
-  * 'image (optionnel)'
+  * 'content (optionnel si image)'
+  * 'image (optionnel si content)'
 * Réponse : { ‘’id’’, ‘’userId’’, ‘’username’’, ‘’content’’, ‘’imageUrl’’, ‘’likes’’, ‘’updatedAt’’, ‘’createdAt’’ }
 
 #### **---Modifier un message---**
@@ -124,8 +124,8 @@
 * URL : http://hostName/api/messages/:messageId
 * Headers : { authorization : Bearer token }
 * Body : form-data
-  * 'content (optionnel)'
-  * 'image (optionnel)'
+  * 'content (optionnel si image)'
+  * 'image (optionnel si content)'
 * Réponse : { "message": "message updated successfully" }
 
 #### **---Supprimer un message---**

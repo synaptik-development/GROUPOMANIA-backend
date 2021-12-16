@@ -87,6 +87,10 @@ exports.postComment = (req, res, next) => {
       },
       (userFound, messageFound, done) => {
         if (messageFound) {
+          if (!content) {
+            return res.status(400).json({ error: "nothing to post" });
+          }
+
           models.comment
             .create({
               userId: userId,
@@ -142,6 +146,10 @@ exports.modifyComment = (req, res, next) => {
       },
       (commentFound, done) => {
         if (commentFound.userId === userId) {
+          if (!content) {
+            return res.status(400).json({ error: "nothing to post" });
+          }
+
           commentFound
             .update({
               content: content ? content : commentFound.content,
