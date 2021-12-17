@@ -3,6 +3,7 @@ const fs = require("fs");
 const jwtUtils = require("../utils/jwt_utils");
 const asyncLib = require("async");
 const express = require("express");
+const multer = require("../middleware/multer-config");
 
 //------------------------------------------------------
 // voir tous les messages
@@ -37,58 +38,59 @@ exports.getMessage = (req, res, next) => {
 //------------------------------------------------------
 exports.postMessage = (req, res, next) => {
   const userId = jwtUtils.getUserId(req.headers["authorization"]);
-
-  asyncLib.waterfall(
-    [
-      (done) => {
-        models.user
-          .findOne({
-            attributes: ["id", "username"],
-            where: { id: userId },
-          })
-          .then((userFound) => {
-            done(null, userFound);
-          })
-          .catch((error) => {
-            return res.status(500).json({ error: "unable to verify user" });
-          });
-      },
-      (userFound, done) => {
-        if (userFound) {
-          done(null, userFound);
-        } else {
-          return res.status(404).json({ error: "user not found" });
-        }
-      },
-      (userFound, done) => {
-        if (!req.body.content && !req.file) {
-          return res.status(400).json({ error: "nothing to post" });
-        } else {
-          let newMessage = models.message
-            .create({
-              userId: userId,
-              username: userFound.username,
-              content: req.body.content ? req.body.content : "",
-              imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : undefined,
-              likes: 0,
+  multer(req, res, (error) => {
+    asyncLib.waterfall(
+      [
+        (done) => {
+          models.user
+            .findOne({
+              attributes: ["id", "username"],
+              where: { id: userId },
             })
-            .then((newMessage) => {
-              done(newMessage);
+            .then((userFound) => {
+              done(null, userFound);
             })
             .catch((error) => {
-              return res.status(500).json({ error: "cannot create message" });
+              return res.status(500).json({ error: "unable to verify user" });
             });
+        },
+        (userFound, done) => {
+          if (userFound) {
+            done(null, userFound);
+          } else {
+            return res.status(404).json({ error: "user not found" });
+          }
+        },
+        (userFound, done) => {
+          if (!req.body.content && !req.file) {
+            return res.status(400).json({ error: "nothing to post" });
+          } else {
+            let newMessage = models.message
+              .create({
+                userId: userId,
+                username: userFound.username,
+                content: req.body.content ? req.body.content : "",
+                imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : undefined,
+                likes: 0,
+              })
+              .then((newMessage) => {
+                done(newMessage);
+              })
+              .catch((error) => {
+                return res.status(500).json({ error: "cannot create message" });
+              });
+          }
+        },
+      ],
+      (newMessage) => {
+        if (newMessage) {
+          return res.status(201).json(newMessage);
+        } else {
+          return res.status(500).json({ error: "cannot add message" });
         }
-      },
-    ],
-    (newMessage) => {
-      if (newMessage) {
-        return res.status(201).json(newMessage);
-      } else {
-        return res.status(500).json({ error: "cannot add message" });
       }
-    }
-  );
+    );
+  });
 };
 
 //------------------------------------------------------
@@ -119,26 +121,28 @@ exports.modifyMessage = (req, res, next) => {
       },
       (messageFound, done) => {
         if (messageFound.userId === userId) {
-          if (!req.body.content && !req.file) {
-            return res.status(400).json({ error: "nothing to update" });
-          }
+          multer(req, res, (error) => {
+            if (!req.body.content && !req.file) {
+              return res.status(400).json({ error: "nothing to update" });
+            }
 
-          //suppression de l'ancienne image si il y en a une nouvelle
-          if (req.file && messageFound.imageUrl != null) {
-            const filename = messageFound.imageUrl.split("/images/")[1];
-            fs.unlinkSync(`images/${filename}`);
-          }
-          messageFound
-            .update({
-              content: req.body.content ? req.body.content : messageFound.content,
-              imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : messageFound.imageUrl,
-            })
-            .then((messageUpdated) => {
-              done(messageUpdated);
-            })
-            .catch((error) => {
-              return res.status(500).json({ error: "cannot update message" });
-            });
+            //suppression de l'ancienne image si il y en a une nouvelle
+            if (req.file && messageFound.imageUrl != null) {
+              const filename = messageFound.imageUrl.split("/images/")[1];
+              fs.unlinkSync(`images/${filename}`);
+            }
+            messageFound
+              .update({
+                content: req.body.content ? req.body.content : messageFound.content,
+                imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : messageFound.imageUrl,
+              })
+              .then((messageUpdated) => {
+                done(messageUpdated);
+              })
+              .catch((error) => {
+                return res.status(500).json({ error: "cannot update message" });
+              });
+          });
         } else {
           return res.status(403).json({ error: "unauthorized request" });
         }
