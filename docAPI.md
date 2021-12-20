@@ -25,8 +25,7 @@
 * DELETE (/api/messages/ :messageId/comments/ :commentId)........**supprimer commentaire**
 
 #### **LIKES**
-* POST (/api/messages/ :messageId/likes/like).........**liker un message**
-* POST (/api/messages/ :messageId/likes/removelike)...**retirer son like**
+* POST (/api/messages/ :messageId/likes).........**liker un message / retirer son like**
 
 #### -----------------------------------------------------------------
 
@@ -173,14 +172,16 @@
 ### [LIKES]
 #### **---Liker un message---**
 * Method : post
-* URL : http://hostName/api/messages/:messageId/likes/like
+* URL : http://hostName/api/messages/:messageId/likes
 * Headers : { authorization : Bearer token }
-* Body : -
+* Body :  x-www-form-urlencoded
+  * 'like' : 1
 * Réponse : { "message": "user liked this message" }
 
 #### **---Retirer mention like---**
 * Method : post
-* URL : http://hostName/api/messages/:messageId/likes/removelike
+* URL : http://hostName/api/messages/:messageId/likes
 * Headers : { authorization : Bearer token }
-* Body : -
+* Body :  x-www-form-urlencoded
+  * 'like' : 0
 * Réponse : { "message": "user removed mention" }
