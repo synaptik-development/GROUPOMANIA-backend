@@ -6,16 +6,22 @@ const asyncLib = require("async");
 //------------------------------------------------------
 // voir qui a liké le message
 //------------------------------------------------------
-exports.getWholiked = (req, res, next) => {
+exports.getIfUserlike = (req, res, next) => {
   const userId = jwtUtils.getUserId(req.headers["authorization"]);
   const messageId = req.params.messageId;
 
-  models.like.findAll({where: {messageId: messageId}})
-  .then((like) => res.status(200).json(like))
+  models.like
+    .findOne({
+      where: {
+        userId: userId,
+        messageId: messageId,
+      },
+    })
+    .then((like) => res.status(200).json(like))
     .catch((error) => {
       return res.status(400).json({ error: "unable to verify who liked" });
     });
-}
+};
 
 //------------------------------------------------------
 // liker / retirer like
@@ -24,7 +30,7 @@ exports.likeMessage = (req, res, next) => {
   const userId = jwtUtils.getUserId(req.headers["authorization"]);
   const messageId = req.params.messageId;
 
-  if(req.body.like == 0) {
+  if (req.body.like == 0) {
     asyncLib.waterfall(
       [
         (done) => {
@@ -174,5 +180,4 @@ exports.likeMessage = (req, res, next) => {
       }
     );
   }
-  
 };
