@@ -34,11 +34,3 @@ const storage = multer.diskStorage({
 });
 
 module.exports = multer({ storage: storage }).single("image");
-
-// module.exports = {
-//   saveFile: () => {
-//     multer({ storage: storage }).single("image");
-//   }
-// }
-
-// if (req.body.userId && req.body.userId !== userId)

@@ -28,8 +28,9 @@ exports.getAllComments = (req, res, next) => {
         if (messageFound) {
           models.comment
             .findAll({
-              attributes: ["id", "userId", "messageId", "content", "username"],
+              attributes: ["id", "userId", "messageId", "content", "username", "createdAt"],
               where: { messageId: messageId },
+              order: [["createdAt", "DESC"]],
             })
             .then((comments) => {
               done(comments);
