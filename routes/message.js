@@ -19,4 +19,3 @@ router.put("/:messageId", auth, messageCtrl.modifyMessage);
 router.delete("/:messageId", auth, messageCtrl.deleteMessage);
 
 module.exports = router;
-
