@@ -4,7 +4,7 @@ const jwtUtils = require("../utils/jwt_utils");
 const asyncLib = require("async");
 
 //------------------------------------------------------
-// voir qui a liké le message
+// voir si le message est liké
 //------------------------------------------------------
 exports.getIfUserlike = (req, res, next) => {
   const userId = jwtUtils.getUserId(req.headers["authorization"]);

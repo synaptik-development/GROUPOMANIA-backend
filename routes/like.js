@@ -6,7 +6,7 @@ const likesCtrl = require("../controllers/like");
 //liker / retirer like
 router.post("/:messageId/likes", auth, likesCtrl.likeMessage);
 
-//voir qui a liké le message
+//voir si le message est liké
 router.get("/:messageId/likes", auth, likesCtrl.getIfUserlike);
 
 module.exports = router;

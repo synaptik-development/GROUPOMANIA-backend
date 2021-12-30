@@ -185,3 +185,10 @@
 * Body :  x-www-form-urlencoded
   * 'like' : 0
 * Réponse : { "message": "user removed mention" }
+
+#### **---Voir si le message est liké---**
+* Method : get
+* URL : http://hostName/api/messages/:messageId/likes
+* Headers : { authorization : Bearer token }
+* Body :  -
+* Réponse : { "userId", "messageId", "createdAt", "updatedAt" } ou null
