@@ -161,7 +161,7 @@ exports.getUser = (req, res, next) => {
       attributes: ["id", "username", "email", "admin", "createdAt", "updatedAt"],
       where: { id: req.params.id },
     })
-    .then((userFound) => res.status(200).json({ userFound }))
+    .then((userFound) => res.status(200).json(userFound))
     .catch((error) => res.status(404).json({ error }));
 };
 
@@ -171,8 +171,8 @@ exports.getUser = (req, res, next) => {
 exports.getAllUsers = (req, res, next) => {
   models.user
     .findAll({ attributes: ["id", "username", "email", "admin", "createdAt", "updatedAt"] })
-    .then((messages) => res.status(200).json(messages))
-    .catch(() => res.status(400).json({ error: "empty news wall" }));
+    .then((users) => res.status(200).json(users))
+    .catch(() => res.status(400).json({ error: "no users" }));
 };
 
 //------------------------------------------------------
@@ -223,7 +223,7 @@ exports.modifyUser = (req, res, next) => {
       (done) => {
         models.user
           .findOne({
-            attributes: ["id", "username", "email", "admin"],
+            attributes: ["id", "username", "email", "admin", "createdAt", "updatedAt"],
             where: { id: req.params.id },
           })
           .then((userFound) => {
@@ -262,7 +262,7 @@ exports.modifyUser = (req, res, next) => {
         if (!username && !email && !password) {
           return res.status(400).json({ message: "nothing to update" });
         } else {
-          return res.status(200).json({ message: "profile updated successfully" });
+          return res.status(200).json(userFound);
         }
       } else {
         return res.status(500).json({ error: "cannot uptate profil" });

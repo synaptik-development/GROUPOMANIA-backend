@@ -64,7 +64,7 @@
 * URL : http://hostName/api/auth/users/:id
 * Headers : { authorization : Bearer token }
 * Body : -
-* Réponse : { ‘’userFound’’ : { ‘’id’’, ‘’username’’, ‘’email’’, ‘’admin’’, ‘’updatedAt’’, ‘’createdAt’’ } }
+* Réponse : { ‘’id’’, ‘’username’’, ‘’email’’, ‘’admin’’, ‘’updatedAt’’, ‘’createdAt’’ }
 
 #### **---Modifier un profil---**
 * Method : put
@@ -125,7 +125,7 @@
 * Body : form-data
   * 'content (optionnel si image)'
   * 'image (optionnel si content)'
-* Réponse : { "message": "message updated successfully" }
+* Réponse : { ‘’id’’, ‘’userId’’, ‘’username’’, ‘’content’’, ‘’imageUrl’’, ‘’likes’’, ‘’updatedAt’’, ‘’createdAt’’ }
 
 #### **---Supprimer un message---**
 * Method : delete
@@ -150,7 +150,7 @@
 * Headers : { authorization : Bearer token }
 * Body : x-www-form-urlencoded
   * 'content'
-* Réponse : [ { ‘’id’’, ‘’userId’’, ‘’messageId’’, ‘’username’’, ‘’content’’, ‘’updatedAt’’, ‘’createdAt’’ }, { … }, … ]
+* Réponse : { ‘’id’’, ‘’userId’’, ‘’messageId’’, ‘’username’’, ‘’content’’, ‘’updatedAt’’, ‘’createdAt’’ }
 
 #### **---Modifier un commentaire---**
 * Method : put
@@ -158,7 +158,7 @@
 * Headers : { authorization : Bearer token }
 * Body : x-www-form-urlencoded
   * 'content'
-* Réponse : { "message": "comment updated successfully" }
+* Réponse : { ‘’id’’, ‘’userId’’, ‘’messageId’’, ‘’username’’, ‘’content’’, ‘’updatedAt’’, ‘’createdAt’’ }
 
 #### **---Supprimer un commentaire---**
 * Method : delete

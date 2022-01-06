@@ -150,7 +150,7 @@ exports.modifyMessage = (req, res, next) => {
     ],
     (messageUpdated) => {
       if (messageUpdated) {
-        return res.status(200).json({ message: "message updated successfully" });
+        return res.status(200).json( messageUpdated );
       } else {
         return res.status(500).json({ error: "cannot update message" });
       }

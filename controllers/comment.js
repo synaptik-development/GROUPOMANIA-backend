@@ -168,7 +168,7 @@ exports.modifyComment = (req, res, next) => {
     ],
     (commentUpdated) => {
       if (commentUpdated) {
-        return res.status(200).json({ message: "comment updated successfully" });
+        return res.status(200).json(commentUpdated);
       } else {
         return res.status(500).json({ error: "cannot update comment" });
       }
