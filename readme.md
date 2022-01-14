@@ -26,7 +26,11 @@ Frontend de l'application: https://github.com/synaptik-development/GROUPOMANIA-f
 * sequelize 
 
 **Etapes :**
-1. Ouvrez le terminal intégré au dossier backend et taper la commande **npx sequelize-cli init** puis renseignez un nom de base de données dans le fichier config.js
+1. Ouvrez le terminal intégré au dossier backend et taper la commande **npx sequelize-cli init** puis renseignez un nom de base de données et vos identifiants mysql (nom d'utilisateur et mot de passe) dans le fichier config.js
+    **nb: pour créer un utilisateur dont l'accés est strictement limité à cette base de données (conseillé) :**
+        1. ouvrez votre terminal mysql
+        2. tapez **CREATE USER 'user name'@'localhost' IDENTIFIED BY 'mot_de_passe';**
+        3. puis **GRANT ALL PRIVILEGES ON database_name.* TO 'username'@'localhost';**
 2. Copiez/collez le contenu du fichier .env.example dans un nouveau fichier .env à la racine du backend et remplacez les valeurs par défaut (vos identifiants mysql, votre mot de passe, un token personnalisé. **Attention** : la database doit avoir le même nom que celui précédemment renseigné dans le fichier de configuration)
 3. créez un dossier "images" à la racine du projet
 4. Dans le terminal intégré au backend entrez **sequelize db:create** suivi de **sequelize db:migrate**
