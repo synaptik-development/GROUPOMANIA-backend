@@ -51,7 +51,7 @@ app.use((req, res, next) => {
   // envoyer des requêtes avec les méthodes mentionnées ( GET ,POST , etc.)
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
 
-  // forcer la protection XSS(1) empécher l'ouverture de la page en cas d'attaque(mode-block) 
+  // forcer la protection XSS(1) empécher l'ouverture de la page en cas d'attaque(mode-block)
   res.setHeader("X-XSS-Protection", "1; mode=block");
   next();
 });

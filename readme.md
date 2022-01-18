@@ -19,6 +19,7 @@ Frontend de l'application: https://github.com/synaptik-development/GROUPOMANIA-f
 * crypto-js
 * dotenv
 * express
+* express-rate-limit
 * helmet
 * jsonwebtoken
 * multer

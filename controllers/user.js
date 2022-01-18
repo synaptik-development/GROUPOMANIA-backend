@@ -143,6 +143,7 @@ exports.login = (req, res, next) => {
       if (userFound) {
         return res.status(201).json({
           userId: userFound.id,
+          username: userFound.username,
           token: jwtUtils.generateToken(userFound),
         });
       } else {

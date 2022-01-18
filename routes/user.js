@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const userCtrl = require("../controllers/user");
+const limiter = require("../middleware/limiter");
 
 //créer un profil
-router.post("/register", userCtrl.register);
+router.post("/register", limiter, userCtrl.register);
 
 //se connecter
-router.post("/login", userCtrl.login);
+router.post("/login", limiter, userCtrl.login);
 
 //voir tous les profils
 router.get("/users", auth, userCtrl.getAllUsers);
