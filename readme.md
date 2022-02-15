@@ -4,9 +4,9 @@
 ## Utilisation de l’application en local
 
 ### Prérequis d’installation
-Node : https://dev.mysql.com/downloads/installer/
+Node : https://nodejs.org/fr/download/ 
 ####
-MySql : https://nodejs.org/fr/download/
+MySql : https://dev.mysql.com/downloads/installer/
 ####
 Frontend de l'application: https://github.com/synaptik-development/GROUPOMANIA-frontend.git
 
